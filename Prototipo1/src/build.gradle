@@ -1,0 +1,61 @@
+buildscript {
+    ext {
+        kotlinVersion = '1.2.60'
+        springBootVersion = '2.0.3.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
+        classpath "org.jetbrains.kotlin:kotlin-noarg:$kotlinVersion"
+    }
+}
+
+apply plugin: 'kotlin'
+apply plugin: 'kotlin-spring'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: "kotlin-jpa"
+
+sourceCompatibility = 1.8
+
+group = 'com.reus.testwap'
+version = '0.0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+compileKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ["-Xjsr305=strict"]
+        jvmTarget = "1.8"
+    }
+}
+
+compileTestKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ["-Xjsr305=strict"]
+        jvmTarget = "1.8"
+    }
+}
+
+dependencies {
+    // JSON
+    compile "com.fasterxml.jackson.module:jackson-module-kotlin"
+    // SPRING
+    testCompile "org.springframework.boot:spring-boot-starter-test"
+    compileOnly "org.springframework.boot:spring-boot-devtools"
+    compile "org.springframework.boot:spring-boot-starter-data-jpa"
+    compile "org.springframework.boot:spring-boot-starter-web"
+    // KOTLIN
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    compile "org.jetbrains.kotlin:kotlin-reflect"
+    // SELENIUM
+    compile "org.seleniumhq.selenium:selenium-java:3.13.0"
+    // MYSQL
+    compile 'mysql:mysql-connector-java'
+}
