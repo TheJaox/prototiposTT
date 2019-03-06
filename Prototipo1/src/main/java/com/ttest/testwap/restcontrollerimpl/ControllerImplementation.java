@@ -37,47 +37,51 @@ public class TestService implements TestServiceInterface {
         return useCaseRepository.save(useCase);
     }
 
-
-
-}
-
-/*
-    override fun updateUseCase(@RequestBody useCase: UseCase): UseCase {
-        return useCaseRepository.save(useCase)
+    @Override
+    public UseCase updateUseCase(@RequestBody UseCase useCase) {
+        return useCaseRepository.save(useCase);
     }
 
-    override fun deleteUseCase(@RequestBody useCase: UseCase): UseCase {
-//        useCaseRepository.delete(useCase)
+    @Override
+    public UseCase deleteUseCase(@RequestBody UseCase useCase) {
+//        useCaseRepository.delete(useCase);
         return useCase
     }
 
-    override fun retrieveUseCaseSteps(@PathVariable useCaseId: String): List<Step> {
-        val useCase = UseCase(useCaseId, "", mutableListOf())
-        val matcher = ExampleMatcher.matching().withIgnorePaths("name", "steps")
-        val example : Example<UseCase> = Example.of(useCase, matcher)
-        return useCaseRepository.findOne(example).get().steps
+    @Override
+    public List<Step> retrieveUseCaseSteps(@PathVariable String useCaseId) {
+        UseCase useCase = new UseCase(useCaseId, "", mutableListOf());
+        ExampleMatcher matcher = ExampleMatcher.matching().withIgnorePaths("name", "steps");
+        Example<UseCase> example = Example.of(useCase, matcher);
+        return useCaseRepository.findOne(example).get().steps;
     }
-    */
 
-/*
-    override fun executeUseCase(@PathVariable useCaseId: String): Boolean {
-        val useCase = useCaseRepository.findById(useCaseId).get()
-        var result: Boolean = false
-        val t = thread {
-            // val driverPath = "D:\\Programs\\geckodriver-v0.21.0-win64\\geckodriver.exe"
-            val driverPath = "/opt/geckodriver-v0.21.0-linux64/geckodriver"
-            //System.setProperty("webdriver.firefox.bin", "C:\\Program Files\\Mozilla Firefox\\firefox.exe")
-            System.setProperty("webdriver.firefox.bin", "/usr/bin/firefox")
-            System.setProperty("webdriver.gecko.driver", driverPath)
-            val options = FirefoxOptions()
-            options.setLogLevel(FirefoxDriverLogLevel.fromLevel(Level.OFF))
-            val driver: WebDriver = FirefoxDriver(options)
-            val test = Test(driver, useCaseId, useCase.steps)
-            test.build()
-            result = test.run()
-            driver.close()
-        }
-        t.join()
-        return result
+    @Override
+    public Boolean executeUseCase(@PathVariable String useCaseId) {
+        UseCase useCase = useCaseRepository.findById(useCaseId).get();
+        Boolean result = Boolean.FALSE;
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //String driverPath = "D:\\Programs\\geckodriver-v0.21.0-win64\\geckodriver.exe";
+                //String firefoxPath = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
+                //System.setProperty("webdriver.firefox.bin", firefoxPath);
+                String driverPath = "/opt/geckodriver-v0.21.0-linux64/geckodriver";
+                String firefoxPath = "/usr/bin/firefox";
+                System.setProperty("webdriver.firefox.bin", firefoxPath);
+                System.setProperty("webdriver.gecko.driver", driverPath);
+                FirefoxOptions options = new FirefoxOptions();
+                options.setLogLevel(FirefoxDriverLogLevel.fromLevel(Level.OFF));
+                WebDriver driver = FirefoxDriver(options);
+                Test test = new Test(driver, useCaseId, useCase.steps);
+                test.build();
+                result = test.run();
+                driver.close(); 
+            }
+        });
+        thread.start();
+        return result;
     }
-    */
+
+
+}

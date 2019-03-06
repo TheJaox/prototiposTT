@@ -1,0 +1,8 @@
+Titulo
+Antecedentes
+	Suposición: QUe estamos asumiendo (Existe una bd con unaestructura que soporta los elementos de un cu)
+	Existe un sistema que implementa los cu.
+	CAda prototipo con base en un objetivo específico del protocolo 
+	S1 COnfigurar ambiente
+	s2 Pruebas sencillas
+	
